@@ -19,7 +19,11 @@ SELECT
 	vrh.year_1,
 	vrh.HDP_growth,
 	price.food_growth,
-	pay.growth_pay
+	CASE WHEN vrh.HDP_growth > 0 AND price.food_growth > 0 THEN 1
+		ELSE 0 END AS HDP_and_food_grew,
+	pay.growth_pay,
+	CASE WHEN vrh.HDP_growth > 0 AND pay.growth_pay > 0 THEN 1
+		ELSE 0 END AS HDP_and_salary_grew
 FROM v_rust_hdp vrh
 LEFT JOIN (
 	SELECT
