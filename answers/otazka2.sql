@@ -17,8 +17,8 @@ SELECT
 	pay_value,
 	unit_type
 FROM t_denisa_louzilova_project_sql_primary_final tp
-WHERE food_code IN ('111301', '114201')
-	AND year_date IN ('2006', '2018')
+WHERE food_code IN (111301, 114201)
+	AND year_date IN (2006, 2018)
 ORDER BY industry_branch_name, food_name, payroll_year;
 
 /*
@@ -42,8 +42,8 @@ FROM (
 		pay_value,
 		unit_type
 	FROM t_denisa_louzilova_project_sql_primary_final tp
-	WHERE food_code IN ('111301', '114201')
-		AND year_date IN ('2006', '2018')
+	WHERE food_code IN (111301, 114201)
+		AND year_date IN (2006, 2018)
 	ORDER BY food_name, payroll_year
 ) a
 GROUP BY food_name, payroll_year;
@@ -54,4 +54,9 @@ GROUP BY food_name, payroll_year;
  * Množství cen potravin, které lze nakoupit za srovnatelná období, je závislé na růstu cen potravin a zvyšování mezd.
  * Počítáme-li s průměrnou mzdou, můžeme usoudit, že zaměstnanci většiny(ne všech) sledovaných odvětví si v roce 2018 
  * mohli nakoupit více potravin než v roce 2006.
+ *
+ * Pokud počítáme s celorepublikovým průměrem mezd, můžeme říct, že v roce 2006 si zaměstnanci ČR mohli dovolit koupit 1287,5 kg chleba,
+ * zatímco v roce 2018 to bylo 1342,2 kg chleba. U mléka byl nárůst ještě vyšší - v roce 2006 bylo možné koupit 1437,2 l mléka 
+ * a v roce 2018 to bylo již 1641,6 l mléka.
  */
+ 
