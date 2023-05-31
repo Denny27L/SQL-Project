@@ -4,7 +4,7 @@
 */
 
 -- výpočet meziročního růstu/poklesu HDP pro ČR:
-CREATE OR REPLACE VIEW v_rust_hdp AS
+CREATE OR REPLACE VIEW v_hdp_growth AS
 SELECT
 	ts2.`year` + 1 AS year_1,
 	round(( ts.GDP - ts2.GDP ) / ts2.GDP * 100, 2 ) AS HDP_growth
@@ -16,39 +16,39 @@ WHERE ts.country = 'Czech Republic';
 
 -- přiřazení průměrného růstu cen potravin a mezd k růstu HDP na roky:
 SELECT
-	vrh.year_1,
-	vrh.HDP_growth,
+	vhg.year_1,
+	vhg.HDP_growth,
 	price.food_growth,
-	CASE WHEN vrh.HDP_growth > 0 AND price.food_growth > 0 THEN 1
+	CASE WHEN vhg.HDP_growth > 0 AND price.food_growth > 0 THEN 1
 		ELSE 0 END AS HDP_and_food_grew,
 	pay.growth_pay,
-	CASE WHEN vrh.HDP_growth > 0 AND pay.growth_pay > 0 THEN 1
+	CASE WHEN vhg.HDP_growth > 0 AND pay.growth_pay > 0 THEN 1
 		ELSE 0 END AS HDP_and_salary_grew
-FROM v_rust_hdp vrh
+FROM v_hdp_growth vhg
 LEFT JOIN (
 	SELECT
 		year_2,
 		round(avg(a.price_growth), 2) AS food_growth
 	FROM (
 	SELECT *
-	FROM v_narust_cen_potravin vn
+	FROM v_food_growth vf
 	GROUP BY year_2, food_name
 ) a
 GROUP BY year_2
 ) price 
-ON vrh.year_1 = price.year_2
+ON vhg.year_1 = price.year_2
 LEFT JOIN (
 	SELECT
 		year_p,
 		round(avg(a.pay_growth), 2) AS growth_pay
 	FROM (
 	SELECT *
-	FROM v_narust_mezd vnm 
+	FROM v_pay_growth vpg
 	GROUP BY year_p, industry_branch_name
 ) a
 GROUP BY year_p
 ) pay
-ON vrh.year_1 = pay.year_p;
+ON vhg.year_1 = pay.year_p;
 
 /*
  * Závěrem:
