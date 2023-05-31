@@ -8,7 +8,7 @@ SELECT
 	round(avg(a.price_growth), 2) AS food_growth
 FROM (
 SELECT *
-FROM v_narust_cen_potravin vn
+FROM v_food_growth vfg
 GROUP BY year_2, food_name
 ) a
 GROUP BY year_2;
@@ -18,7 +18,7 @@ GROUP BY year_2;
  */
 
 -- pro mzdy:
-CREATE OR REPLACE VIEW v_narust_mezd AS
+CREATE OR REPLACE VIEW v_pay_growth AS
 SELECT DISTINCT
 	p.industry_branch_name,
 	p2.payroll_year + 1 AS year_p,
@@ -34,7 +34,7 @@ SELECT
 	round(avg(a.pay_growth), 2) AS pay_avg 
 FROM (
 	SELECT *
-	FROM v_narust_mezd vnm 
+	FROM v_pay_growth vpg 
 	GROUP BY year_p, industry_branch_name
 ) a
 GROUP BY year_p;
@@ -47,13 +47,13 @@ SELECT
 	round(food_avg - pay_avg, 2) AS difference
 FROM (
 SELECT
-	vp.year_2,
-	round(avg(vp.price_growth), 2) AS food_avg,
-	round(avg(vm.pay_growth), 2) AS pay_avg
-FROM v_narust_cen_potravin vp
-JOIN v_narust_mezd vm
-	ON vp.year_2 = vm.year_p
-GROUP BY year_2
+	vf.year_2,
+	round(avg(vf.price_growth), 2) AS food_avg,
+	round(avg(vp.pay_growth), 2) AS pay_avg
+FROM v_food_growth vf
+JOIN v_pay_growth vp
+	ON vf.year_2 = vp.year_p
+GROUP BY vf.year_2
 ) a;
 
 /*
