@@ -78,7 +78,7 @@ ORDER BY p.industry_branch_name, year_p
 WHERE a.pay_growth < 0;
 
 -- pomocná tabulka pro uložení poklesu mezd:
-CREATE OR REPLACE VIEW v_pokles_mezd AS
+CREATE OR REPLACE VIEW v_pay_drop AS
 SELECT DISTINCT
 	a.industry_branch_name,
 	a.industry_code
@@ -103,8 +103,8 @@ SELECT DISTINCT
 	tp.industry_branch_name
 FROM t_denisa_louzilova_project_sql_primary_final tp
 WHERE tp.industry_branch_name NOT IN(
-		SELECT vpm.industry_branch_name
-		FROM v_pokles_mezd vpm
+		SELECT vpd.industry_branch_name
+		FROM v_pay_drop vpd
 );
 
 /*
