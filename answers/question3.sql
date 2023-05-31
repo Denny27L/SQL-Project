@@ -3,7 +3,7 @@
  */
 
 -- výpočet meziročního nárustu cen potravin v letech:
-CREATE OR REPLACE VIEW v_narust_cen_potravin AS
+CREATE OR REPLACE VIEW v_food_growth AS
 SELECT
 	tp.food_name,
 	tp2.year_date + 1 AS year_2,
@@ -22,7 +22,7 @@ GROUP BY tp.food_name, year_2;
 SELECT
 	food_name,
 	round(avg(price_growth), 2) AS price_gr
-FROM v_narust_cen_potravin vn
+FROM v_food_growth vfg
 GROUP BY food_name
 ORDER BY price_gr;
 
