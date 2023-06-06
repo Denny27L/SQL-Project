@@ -28,7 +28,7 @@ více mléka i chleba, nicméně cena chleba rostla více než u mléka
 SELECT
 	payroll_year,
 	food_name,
-	round(avg(food_amount), 2)AS food_amount_final,
+	round(avg(food_amount), 2) AS food_amount_final,
 	price_unit,
 	price,
 	unit_type
